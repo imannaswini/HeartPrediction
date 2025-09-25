@@ -135,7 +135,4 @@ streamlit-option-menu
 
 
 
----
-
-If you want, I can also **add a “Screenshots / Demo” section** with placeholders so your GitHub repo looks very professional. Do you want me to do that next?
 ```
