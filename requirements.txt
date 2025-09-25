@@ -1,0 +1,8 @@
+streamlit
+pandas
+scikit-learn
+joblib
+plotly
+fpdf2
+streamlit-option-menu
+shap
