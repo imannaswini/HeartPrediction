@@ -31,7 +31,9 @@ def create_pdf_report(input_data, result_text, confidence):
     for key, value in input_data.items():
         pdf.cell(50, 10, f"{key.replace('_', ' ').title()}:", 0, 0)
         pdf.cell(0, 10, str(value), 0, 1)
-    return pdf.output(dest='S').encode('latin1')
+    
+    # FIX: return bytes directly for Streamlit
+    return pdf.output(dest='S')  # returns bytes
 
 # ---------------- MODEL LOADING ----------------
 @st.cache_resource
@@ -42,31 +44,31 @@ def load_model():
 
 # ---------------- PREDICTION PAGE ----------------
 def show_prediction_page(model, scaler):
-    st.title("❤️ Heart Disease Prediction Tool")
+    st.title("Heart Disease Prediction Tool")
 
     # ===================== USER GUIDELINES =====================
-    with st.expander("📘 User Guidelines"):
+    with st.expander(" User Guidelines"):
         st.markdown("""
-        ### Welcome to the Heart Disease Prediction Tool!
+         Welcome to the Heart Disease Prediction Tool!
         This AI-powered tool estimates your **risk of heart disease** based on your health data.
 
-        #### 🧠 How It Works
+        How It Works
         - Uses a trained **Machine Learning model** based on real patient datasets.
         - Predicts your **heart disease risk** and provides a **confidence score**.
 
-        #### 📝 How to Use
+        How to Use
         1. Enter all health parameters accurately.
         2. Click **"🔍 Predict"** to view your result.
         3. Download your personalized **PDF Report** for reference.
 
-        #### ⚠️ Disclaimer
+        Disclaimer
         - This tool is for **educational and awareness purposes only**.
         - It is **not a medical diagnosis**.
         - Always consult a **healthcare professional** for advice.
         """)
 
     # ===================== TOOL INFO =====================
-    with st.expander("📊 Model & Accuracy Information"):
+    with st.expander("Model & Accuracy Information"):
         st.markdown("""
         ### 🔧 Model Details
         - **Algorithm:** Logistic Regression  
@@ -75,14 +77,14 @@ def show_prediction_page(model, scaler):
         - **Framework:** Scikit-learn 1.3+  
         - **Normalization:** StandardScaler applied  
 
-        ### ⚙️ Prediction Meaning
+        ### Prediction Meaning
         - **At Risk:** Higher probability of heart disease.  
         - **Low Risk:** Lower probability.  
         - **Confidence Score:** Indicates model certainty.
         """)
 
     # ===================== TERM DETAILS =====================
-    with st.expander("📚 Input Terms Explained"):
+    with st.expander("Input Terms Explained"):
         st.markdown("""
         | Term | Description |
         |------|--------------|
@@ -102,7 +104,7 @@ def show_prediction_page(model, scaler):
         """)
 
     st.markdown("---")
-    st.header("🧮 Enter Your Health Details")
+    st.header("Enter Your Health Details")
 
     # ---------------- INPUT SECTION ----------------
     age = st.number_input("Age", 1, 120, 30)
@@ -129,16 +131,16 @@ def show_prediction_page(model, scaler):
     input_scaled = scaler.transform(input_array)
 
     # ---------------- PREDICTION SECTION ----------------
-    if st.button("🔍 Predict"):
+    if st.button(" Predict"):
         prediction = model.predict(input_scaled)[0]
         confidence = model.predict_proba(input_scaled)[0][int(prediction)] * 100
         result_text = "At Risk" if prediction == 1 else "Low Risk"
 
-        st.success(f"🧠 Prediction: **{result_text}** (Confidence: {confidence:.2f}%)")
+        st.success(f"Prediction: **{result_text}** (Confidence: {confidence:.2f}%)")
 
         pdf_data = create_pdf_report(user_input, result_text, confidence)
         st.download_button(
-            label="📄 Download Full Report (PDF)",
+            label=" Download Full Report (PDF)",
             data=pdf_data,
             file_name="Heart_Health_Report.pdf",
             mime="application/pdf"
@@ -146,42 +148,42 @@ def show_prediction_page(model, scaler):
 
 # ---------------- HOMEPAGE ----------------
 def show_home_page():
-    st.title("🏠 Welcome to the Heart Health Prediction Platform")
+    st.title("Welcome to the Heart Health Prediction Platform")
 
     st.markdown("""
-    ### 💡 About This Platform
+     About This Platform
     This interactive web app allows you to estimate your **risk of heart disease**
     based on standard medical health indicators.
 
-    #### 🚀 Features:
+     Features:
     - AI-based **Heart Disease Risk Prediction**
     - **Confidence Score** for predictions  
     - Downloadable **PDF Report**
     - Explanation of all input medical terms  
 
-    #### 🧠 How It Works:
+     How It Works:
     1. The model was trained on the **UCI Heart Disease dataset**.
     2. It uses a **Logistic Regression algorithm** for binary classification.
     3. Input features are **standardized using StandardScaler**.
     4. The model outputs a **risk prediction** with probability confidence.
 
-    #### 🩺 Disclaimer:
+    Disclaimer:
     - This is **not a diagnostic tool**.
     - Always consult a **medical professional** for clinical advice.
     """)
 
-    st.info("👉 Use the sidebar to navigate to the **Prediction Tool**.")
+    st.info(" Use the sidebar to navigate to the **Prediction Tool**.")
 
 # ---------------- MAIN ----------------
 def main():
     st.sidebar.title("🔍 Navigation")
-    page = st.sidebar.radio("Go to:", ["🏠 Home", "❤️ Prediction Tool"])
+    page = st.sidebar.radio("Go to:", ["Home", " Prediction Tool"])
 
     model, scaler = load_model()
 
-    if page == "🏠 Home":
+    if page == "Home":
         show_home_page()
-    elif page == "❤️ Prediction Tool":
+    elif page == " Prediction Tool":
         show_prediction_page(model, scaler)
 
 if __name__ == "__main__":
