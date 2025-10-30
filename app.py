@@ -2,7 +2,7 @@ import streamlit as st
 import joblib
 import numpy as np
 # This is the explicit, correct fix
-from fpdf2 import FPDF
+from fpdf import FPDF
 from datetime import datetime
 
 # ---------------- PDF CLASS ----------------
