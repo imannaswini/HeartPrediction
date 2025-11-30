@@ -2,39 +2,39 @@ import streamlit as st
 import joblib
 import numpy as np
 # This is the explicit, correct fix
-from fpdf import FPDF
+# from fpdf import FPDF
 from datetime import datetime
 
 # ---------------- PDF CLASS ----------------
-class PDF(FPDF):
-    def header(self):
-        self.set_font('Arial', 'B', 16)
-        self.cell(0, 10, 'Heart Disease Prediction Report', 0, 1, 'C')
-        self.ln(5)
+# class PDF(FPDF):
+#     def header(self):
+#         self.set_font('Arial', 'B', 16)
+#         self.cell(0, 10, 'Heart Disease Prediction Report', 0, 1, 'C')
+#         self.ln(5)
 
-# ---------------- PDF CREATION ----------------
-def create_pdf_report(input_data, result_text, confidence):
-    pdf = PDF()
-    pdf.add_page()
-    pdf.set_font('Arial', 'B', 16)
-    pdf.cell(0, 10, 'Prediction Summary', 0, 1, 'L')
-    pdf.set_font('Arial', '', 12)
-    pdf.cell(0, 10, f"Report generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", 0, 1)
-    pdf.ln(5)
-    pdf.set_font('Arial', 'B', 12)
-    pdf.cell(50, 10, 'Overall Risk:', 0, 0)
-    pdf.set_font('Arial', '', 12)
-    pdf.cell(0, 10, f"{result_text} (Confidence: {confidence:.2f}%)", 0, 1)
-    pdf.ln(5)
-    pdf.set_font('Arial', 'B', 16)
-    pdf.cell(0, 10, 'Patient Data Provided', 0, 1, 'L')
-    pdf.set_font('Arial', '', 12)
-    for key, value in input_data.items():
-        pdf.cell(50, 10, f"{key.replace('_', ' ').title()}:", 0, 0)
-        pdf.cell(0, 10, str(value), 0, 1)
+# # ---------------- PDF CREATION ----------------
+# def create_pdf_report(input_data, result_text, confidence):
+#     pdf = PDF()
+#     pdf.add_page()
+#     pdf.set_font('Arial', 'B', 16)
+#     pdf.cell(0, 10, 'Prediction Summary', 0, 1, 'L')
+#     pdf.set_font('Arial', '', 12)
+#     pdf.cell(0, 10, f"Report generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", 0, 1)
+#     pdf.ln(5)
+#     pdf.set_font('Arial', 'B', 12)
+#     pdf.cell(50, 10, 'Overall Risk:', 0, 0)
+#     pdf.set_font('Arial', '', 12)
+#     pdf.cell(0, 10, f"{result_text} (Confidence: {confidence:.2f}%)", 0, 1)
+#     pdf.ln(5)
+#     pdf.set_font('Arial', 'B', 16)
+#     pdf.cell(0, 10, 'Patient Data Provided', 0, 1, 'L')
+#     pdf.set_font('Arial', '', 12)
+#     for key, value in input_data.items():
+#         pdf.cell(50, 10, f"{key.replace('_', ' ').title()}:", 0, 0)
+#         pdf.cell(0, 10, str(value), 0, 1)
     
-    # FIX: return bytes directly for Streamlit
-    return pdf.output(dest='S')  # returns bytes
+#     # FIX: return bytes directly for Streamlit
+#     return pdf.output(dest='S')  # returns bytes
 
 # ---------------- MODEL LOADING ----------------
 @st.cache_resource
@@ -139,13 +139,13 @@ def show_prediction_page(model, scaler):
 
         st.success(f"Prediction: **{result_text}** (Confidence: {confidence:.2f}%)")
 
-        pdf_data = create_pdf_report(user_input, result_text, confidence)
-        st.download_button(
-            label=" Download Full Report (PDF)",
-            data=pdf_data,
-            file_name="Heart_Health_Report.pdf",
-            mime="application/pdf"
-        )
+        # pdf_data = create_pdf_report(user_input, result_text, confidence)
+        # st.download_button(
+        #     label=" Download Full Report (PDF)",
+        #     data=pdf_data,
+        #     file_name="Heart_Health_Report.pdf",
+        #     mime="application/pdf"
+        # )
 
 # ---------------- HOMEPAGE ----------------
 def show_home_page():
